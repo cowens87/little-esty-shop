@@ -1,7 +1,8 @@
-<%= @merchant.name %>
+Merchant Name: <%= @merchant.name %> <br>
 
-<%= link_to('Items', "/merchants/#{@merchant.id}/items") %>
-<%= link_to('Invoices', "/merchants/#{@merchant.id}/invoices") %>
+<%= link_to('Items', "/merchants/#{@merchant.id}/items") %><br>
+<%= link_to('Invoices', "/merchants/#{@merchant.id}/invoices") %><br>
+<%= link_to('View All Discounts', merchant_discounts_path(@merchant.id)) %>
 
 <ul class='merchant-top-5-customers-list'>
   <% @merchant.top_five_customers.each do |customer| %>

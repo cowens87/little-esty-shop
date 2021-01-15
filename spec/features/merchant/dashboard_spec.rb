@@ -38,9 +38,9 @@ RSpec.describe 'Merchant Dashboard' do
         @tx10        = Transaction.create!(result: "success", credit_card_number: 010001005523, credit_card_expiration_date: 20220101, invoice_id: @invoice10.id,)
         @tx11        = Transaction.create!(result: "success", credit_card_number: 0100010055, credit_card_expiration_date: 20220101, invoice_id: @invoice11.id,)
         @tx12        = Transaction.create!(result: "failure", credit_card_number: 0100010055, credit_card_expiration_date: 20220101, invoice_id: @invoice14.id,)
-        # @discount_10 = Discount.create!(discount_percentage: 10, quantity_threshold: 5, merchant_id: @max.id)
-        # @discount_15 = Discount.create!(discount_percentage: 15, quantity_threshold: 10, merchant_id: @max.id)
-        # @discount_20 = Discount.create!(discount_percentage: 20, quantity_threshold: 20, merchant_id: @max.id)
+        @discount_10 = Discount.create!(discount_percentage: 10, quantity_threshold: 5, merchant_id: @amazon.id)
+        @discount_15 = Discount.create!(discount_percentage: 15, quantity_threshold: 10, merchant_id: @amazon.id)
+        @discount_20 = Discount.create!(discount_percentage: 20, quantity_threshold: 20, merchant_id: @amazon.id)
       end
 
       it "Then I see the name of my merchant" do
@@ -123,24 +123,36 @@ RSpec.describe 'Merchant Dashboard' do
             expect(invoice1.created_at.strftime("%A, %B %d, %Y")).to appear_before(invoice2.created_at.strftime("%A, %B %d, %Y"))
           end
         end
-
-        # describe 'Merchant Bulk Discounts Index' do
-        #   it 'I see a link to view all my discounts' do
-        #     visit merchant_dashboard_path(@max.id)
-
-        #     expect(page).to have_link('View All Discounts')
-
-        #     click_link('View All Discounts')
-
-        #     expect(current_path).to eq(merchant_discounts_path(@max.id))
-        #     expect(page).to have_content("Discount Percentage: #{@discount_10.discount_percentage}, Quantity: #{@discount_10.quantity_threshold}")
-        #     expect(page).to have_content("Discount Percentage: #{@discount_15.discount_percentage}, Quantity: #{@discount_15.quantity_threshold}")
-        #     expect(page).to have_content("Discount Percentage: #{@discount_20.discount_percentage}, Quantity: #{@discount_20.quantity_threshold}")
-        #     expect(page).to have_link("#{@discount_10.discount_percentage}")
-        #     expect(page).to have_link("#{@discount_15.discount_percentage}")
-        #     expect(page).to have_link("#{@discount_20.discount_percentage}")
-        #   end
-        # end
+        # Individual Project Stories:
+        describe 'Merchant Bulk Discounts Index' do
+          it 'I see a link to view all my discounts' do
+            visit merchant_dashboard_path(@amazon.id)
+            
+            expect(page).to have_link('View All Discounts')
+            
+            click_link('View All Discounts')
+      
+            expect(current_path).to eq(merchant_discounts_path(@amazon.id))
+            
+            within("#discount-info-#{@discount_10.id}") do
+              expect(page).to have_content("Discount Percentage: #{@discount_10.discount_percentage}")
+              expect(page).to have_link("Discount #{@discount_10.id}")
+              expect(page).to have_content("Quantity Threshold: #{@discount_10.quantity_threshold}")
+            end
+            
+            within("#discount-info-#{@discount_15.id}") do
+              expect(page).to have_link("Discount #{@discount_15.id}")
+              expect(page).to have_content("Discount Percentage: #{@discount_15.discount_percentage}")
+              expect(page).to have_content("Quantity Threshold: #{@discount_15.quantity_threshold}")
+            end
+            
+            within("#discount-info-#{@discount_20.id}") do
+              expect(page).to have_link("Discount #{@discount_20.id}")
+              expect(page).to have_content("Discount Percentage: #{@discount_20.discount_percentage}")
+              expect(page).to have_content("Quantity Threshold: #{@discount_20.quantity_threshold}")
+            end
+          end
+        end
       end
     end
   end
