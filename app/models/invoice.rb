@@ -15,7 +15,7 @@ class Invoice < ApplicationRecord
   end
 
   def total_revenue
-    invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
+    invoice_items.sum('unit_price * quantity')
   end
 
   def self.best_day
