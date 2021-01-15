@@ -37,28 +37,28 @@ RSpec.describe 'As a merchant', type: :feature do
         @tx10        = Transaction.create!(result: "success", credit_card_number: 010001005523, credit_card_expiration_date: 20220101, invoice_id: @invoice10.id,)
         @tx11        = Transaction.create!(result: "success", credit_card_number: 0100010055, credit_card_expiration_date: 20220101, invoice_id: @invoice11.id,)
         @tx12        = Transaction.create!(result: "failure", credit_card_number: 0100010055, credit_card_expiration_date: 20220101, invoice_id: @invoice14.id,)
-        # @discount_10 = Discount.create!(discount_percentage: 10, quantity_threshold: 5, merchant_id: @max.id)
-        # @discount_15 = Discount.create!(discount_percentage: 15, quantity_threshold: 10, merchant_id: @max.id)
-        # @discount_20 = Discount.create!(discount_percentage: 20, quantity_threshold: 20, merchant_id: @max.id)
+        @discount_10 = Discount.create!(discount_percentage: 10, quantity_threshold: 5, merchant_id: @amazon.id)
+        @discount_15 = Discount.create!(discount_percentage: 15, quantity_threshold: 10, merchant_id: @amazon.id)
+        @discount_20 = Discount.create!(discount_percentage: 20, quantity_threshold: 20, merchant_id: @amazon.id)
     end
+    # Individual Project Stories:
+    describe 'Merchant Bulk Discount Edit' do
+      it 'I see a link to edit the bulk discount' do
+        visit merchant_discount_path(@amazon.id, @discount_10.id)
 
-    # describe 'Merchant Bulk Discount Edit' do
-    #   it 'I see a link to edit the bulk discount' do
-    #      visit merchant_discount_path(@discount_10.id)
+        expect(page).to have_content("Discount Percentage: 10")
+        expect(page).to have_link('Edit Discount')
+        
+        click_link('Edit Discount')
+        
+        expect(current_path).to eq(edit_merchant_discount_path(@amazon.id, @discount_10.id))
 
-    #     within("#merchant-discount-#{@discount_10.id}") do
-    #       expect(page).to have_link('Edit Discount')
-    #       click_link('Edit Discount')
-    #     end
+        fill_in 'Discount Percentage:', with: 55
+        click_on 'Submit'
 
-    #     expect(current_path).to eq(edit_merchant_discount_path(@discount_10.id))
-
-    #     fill_in 'Discount Percentage:', with: 55
-    #     click_on 'Submit'
-
-    #     expect(current_path).to eq(merchant_discount_path(@discount_10.id))
-    #     expect(page).to have_content("Discount Percentage: 55")
-    #   end
-    # end
+        expect(current_path).to eq(merchant_discount_path(@amazon.id, @discount_10.id))
+        expect(page).to have_content("Discount Percentage: 55")
+      end
+    end
   end
 end
