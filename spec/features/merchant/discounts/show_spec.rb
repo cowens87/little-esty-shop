@@ -37,18 +37,18 @@ RSpec.describe 'As a merchant', type: :feature do
         @tx10        = Transaction.create!(result: "success", credit_card_number: 010001005523, credit_card_expiration_date: 20220101, invoice_id: @invoice10.id,)
         @tx11        = Transaction.create!(result: "success", credit_card_number: 0100010055, credit_card_expiration_date: 20220101, invoice_id: @invoice11.id,)
         @tx12        = Transaction.create!(result: "failure", credit_card_number: 0100010055, credit_card_expiration_date: 20220101, invoice_id: @invoice14.id,)
-        # @discount_10 = Discount.create!(discount_percentage: 10, quantity_threshold: 5, merchant_id: @max.id)
-        # @discount_15 = Discount.create!(discount_percentage: 15, quantity_threshold: 10, merchant_id: @max.id)
-        # @discount_20 = Discount.create!(discount_percentage: 20, quantity_threshold: 20, merchant_id: @max.id)
+        @discount_10 = Discount.create!(discount_percentage: 10, quantity_threshold: 5, merchant_id: @amazon.id)
+        @discount_15 = Discount.create!(discount_percentage: 15, quantity_threshold: 10, merchant_id: @amazon.id)
+        @discount_20 = Discount.create!(discount_percentage: 20, quantity_threshold: 20, merchant_id: @amazon.id)
     end
+    # Individual Project Stories:
+    describe 'Merchant Bulk Discount Show' do
+      it 'I see the bulk discounts quantity threshold and percentage discount' do
+        visit merchant_discount_path(@amazon.id, @discount_10.id)
 
-    # describe 'Merchant Bulk Discount Show' do
-    #   it 'I see the bulk discounts quantity and price' do
-    #     visit merchant_discount_path(@discount_10.id)
-
-    #     expect(page).to have_content("Quantity: #{@discount_10.quantity_threshold}")
-    #     expect(page).to have_content("Price: #{@discount_10.discounted_price}")
-    #   end
-    # end
+        expect(page).to have_content("Discount Percentage: #{@discount_10.discount_percentage}")
+        expect(page).to have_content("Quantity Threshold: #{@discount_10.quantity_threshold}")
+      end
+    end
   end
 end
