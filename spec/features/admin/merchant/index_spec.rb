@@ -15,12 +15,12 @@ RSpec.describe "As a admin user" do
       @alibaba  = Merchant.create!(name: 'Alibaba', status: 1)
       # Invoices:
       @invoice1 = Invoice.create!(status: 0, customer_id: @sally.id, merchant_id: @amazon.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
-      @invoice2 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: @alibaba.id)
-      @invoice3 = Invoice.create!(status: 0, customer_id: @billy.id, merchant_id: @alibaba.id)
-      @invoice4 = Invoice.create!(status: 0, customer_id: @steve.id, merchant_id: @amazon.id)
-      @invoice5 = Invoice.create!(status: 0, customer_id: @frank.id, merchant_id: @alibaba.id)
-      @invoice6 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: @alibaba.id)
-      @invoice7 = Invoice.create!(status: 0, customer_id: @sally.id, merchant_id: @alibaba.id)
+      @invoice2 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: @alibaba.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+      @invoice3 = Invoice.create!(status: 0, customer_id: @billy.id, merchant_id: @alibaba.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+      @invoice4 = Invoice.create!(status: 0, customer_id: @steve.id, merchant_id: @amazon.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+      @invoice5 = Invoice.create!(status: 0, customer_id: @frank.id, merchant_id: @alibaba.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+      @invoice6 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: @alibaba.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+      @invoice7 = Invoice.create!(status: 0, customer_id: @sally.id, merchant_id: @alibaba.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
       # Transactions:
       @tx1      = Transaction.create!(credit_card_number: 010001001022, credit_card_expiration_date: 20251001, result: 'success', invoice_id: @invoice2.id,)
       @tx2      = Transaction.create!(credit_card_number: 010001005555, credit_card_expiration_date: 20220101, result: 'failed', invoice_id: @invoice1.id,)
@@ -165,12 +165,12 @@ RSpec.describe "As a admin user" do
         amazon    = Merchant.create!(name: 'Amazon', status: 0)
         alibaba   = Merchant.create!(name: 'Alibaba', status: 1)
         # Invoices:
-        invoice1 = Invoice.create!(status: 0, customer_id: @sally.id, merchant_id: amazon.id)
-        invoice2 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: alibaba.id)
-        invoice3 = Invoice.create!(status: 0, customer_id: @billy.id, merchant_id: all_birds.id)
-        invoice4 = Invoice.create!(status: 0, customer_id: @steve.id, merchant_id: overstock.id)
-        invoice5 = Invoice.create!(status: 0, customer_id: @frank.id, merchant_id: big_lots.id)
-        invoice6 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: walmart.id)
+        invoice1 = Invoice.create!(status: 0, customer_id: @sally.id, merchant_id: amazon.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+        invoice2 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: alibaba.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+        invoice3 = Invoice.create!(status: 0, customer_id: @billy.id, merchant_id: all_birds.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+        invoice4 = Invoice.create!(status: 0, customer_id: @steve.id, merchant_id: overstock.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+        invoice5 = Invoice.create!(status: 0, customer_id: @frank.id, merchant_id: big_lots.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+        invoice6 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: walmart.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
         # Transactions:
         tx1      = Transaction.create!(credit_card_number: 010001001022, credit_card_expiration_date: 20251001, result: 'success', invoice_id: invoice2.id,)
         tx2      = Transaction.create!(credit_card_number: 010001005555, credit_card_expiration_date: 20220101, result: 'failed', invoice_id: invoice1.id,)
@@ -197,11 +197,11 @@ RSpec.describe "As a admin user" do
         visit admin_merchants_path
 
         within(".merchant-top5") do
-          expect(page).to have_content("Top selling date for Big Lots was 01/14/21")
+          expect(page).to have_content("Top selling date for Big Lots was 12/08/20")
           expect(page).to have_content("Top selling date for Amazon was 12/08/20")
-          expect(page).to have_content("Top selling date for All Birds was 01/14/21")
-          expect(page).to have_content("Top selling date for Alibaba was 01/14/21")
-          expect(page).to have_content("Top selling date for Walmart was 01/14/21")
+          expect(page).to have_content("Top selling date for All Birds was 12/08/20")
+          expect(page).to have_content("Top selling date for Alibaba was 12/08/20")
+          expect(page).to have_content("Top selling date for Walmart was 12/08/20")
         end
       end
     end

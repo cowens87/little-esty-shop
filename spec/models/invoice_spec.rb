@@ -61,6 +61,6 @@ RSpec.describe Invoice, type: :model do
   it 'Can display the invoice creation date of its 5 most popular items' do
     date = Invoice.best_day.created_at
     expected = date.strftime("%A, %B %d, %Y")
-    expect(expected).to eq("Thursday, January 14, 2021")
+    expect(expected).to eq("Friday, January 15, 2021")
   end
 end
