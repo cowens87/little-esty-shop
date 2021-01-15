@@ -44,20 +44,21 @@ RSpec.describe 'As a merchant', type: :feature do
     # Individual Project Stories:
     describe 'Merchant Bulk Discount Create' do
       it 'I see a link to create a new discount' do
-        visit merchant_discounts_path(@max.id)
+        visit merchant_discounts_path(@amazon.id)
 
         expect(page).to have_link('Create a New Discount')
 
         click_link('Create a New Discount')
 
-        expect(current_path).to eq(new_merchant_discount_path)
+        expect(current_path).to eq(new_merchant_discount_path(@amazon.id))
 
         fill_in 'Discount Percentage:', with: 25
         fill_in 'Quantity Threshold:', with: 50
         click_on 'Submit'
 
-        expect(current_path).to eq(merchant_discounts_path(@max.id))
-        expect(page).to have_content("Discount Percentage: 25, Quantity: 50")
+        expect(current_path).to eq(merchant_discounts_path(@amazon.id))
+        expect(page).to have_content('Discount Percentage: 25')
+        expect(page).to have_content('Quantity Threshold: 50')
       end
     end
 

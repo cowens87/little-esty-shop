@@ -5,7 +5,29 @@ class MerchantDiscountsController < ApplicationController
   end
 
   def show
-    require 'pry'; binding.pry
-    @discount = Discount.find(params[:id])
+    merchant = Merchant.find(params[:merchant_id])
+    @discount = merchant.discounts.find(params[:id])
+  end
+
+  def new
+    merchant = Merchant.find(params[:merchant_id])
+    @discount = Discount.new(merchant_id: merchant.id)  
+  end
+
+  def create
+    merchant = Merchant.find(params['merchant_id'])
+    discount = Discount.create!({
+                                discount_percentage: params['discount']['discount_percentage'], 
+                                quantity_threshold: params['discount']['quantity_threshold'], 
+                                merchant_id: merchant.id
+                                })
+    discount.save
+    redirect_to merchant_discounts_path
+  end
+
+  private
+
+  def discount_params
+    params.require(:discount).permit(:discount_percentage, :quantity_threshold, :merchant_id)
   end
 end
