@@ -93,5 +93,12 @@ describe 'As a merchant' do
 
       expect(page).to have_content("Total Revenue: #{(expected_revenue)}")
     end
+
+    # describe 'Merchant Invoice Show Page: Total Revenue includes discounts' do
+    #   it 'I see that the total revenue for my merchant includes bulk discounts in the calculation' do
+      # visit "merchants/#{@max.id}/invoices/#{@invoice1.id}"
+      # expect(page).to have_content()
+    #   end
+    # end
   end
 end

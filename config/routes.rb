@@ -3,9 +3,9 @@ Rails.application.routes.draw do
   # get "/admin", to: "admin/dashboard#index"
   # get "/admin/merchants", to: "admin/merchants#index"
 
-  get '/', to: 'welcome#index', as: :root
+  root 'welcome#index'
   
-  namespace :admin do
+ namespace :admin do
     root :to => 'dashboard#index'
     resources :merchants, except: [:destroy]
     resources :invoices, except: [:destroy]
@@ -15,14 +15,15 @@ Rails.application.routes.draw do
     resources :items, only: [:index, :show, :edit, :update, :new, :create], controller: :merchant_items
     resources :invoices, only: [:index], controller: :merchant_invoices
     resources :invoice_items, only: [:update], controller: :merchant_invoice_items
+    resources :discounts
   end
 
   namespace :merchants do
     resources :invoices, only: [:index]
   end
 
-  get '/merchants/:id/dashboard', to: 'merchants#dashboard'
-  get '/merchants/:id/invoices', to: 'merchant_invoices#index'
+  get '/merchants/:id/dashboard', to: 'merchants#dashboard', as: 'merchant_dashboard' 
   get '/merchants/:id/invoices/:invoice_id', to: 'merchant_invoices#show'
-  get '/github', to: 'github_api#show'
+
+  resources :github, only: [:show], controller: :github_api
 end
