@@ -25,6 +25,12 @@ class MerchantDiscountsController < ApplicationController
     redirect_to merchant_discounts_path
   end
 
+  def destroy
+    params
+    Discount.destroy(params[:id])
+    redirect_to merchant_discounts_path(params[:merchant_id])
+  end
+
   private
 
   def discount_params

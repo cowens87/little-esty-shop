@@ -62,18 +62,18 @@ RSpec.describe 'As a merchant', type: :feature do
       end
     end
 
-    # describe 'Merchant Bulk Discount Delete' do
-    #   it 'Next to each bulk discount I see a link to delete it' do
-    #     visit merchant_discounts_path(@max.id)
+    describe 'Merchant Bulk Discount Delete' do
+      it 'Next to each bulk discount I see a link to delete it' do
+        visit merchant_discounts_path(@amazon.id)
 
-    #     within("#merchant-discount-#{@discount_10.id}") do
-    #       expect(page).to have_link('Delete Discount')
-    #       click_link('Delete Discount')
-    #     end
+        within("#discount-info-#{@discount_10.id}") do
+          expect(page).to have_link('Delete Discount')
+          click_link('Delete Discount')
+        end
 
-    #     expect(current_path).to eq(merchant_discounts_path(@max.id))
-    #     expect(page).to_not have_content(@discount_10.id)
-    #   end
-    # end
+        expect(current_path).to eq(merchant_discounts_path(@amazon.id))
+        expect(page).to_not have_content(@discount_10.id)
+      end
+    end
   end
 end
