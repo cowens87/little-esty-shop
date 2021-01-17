@@ -51,7 +51,7 @@ class Merchant < ApplicationRecord
   def disabled_items
     items.where(status: 'Disabled')
   end
-
+ # Individual Project Methods:
   def discount_amount?(items_on_invoice)
     discount_total = 0
     items_on_invoice.each do |item|
@@ -65,5 +65,15 @@ class Merchant < ApplicationRecord
       end
     end
     discount_total
+  end
+
+  def discount_eligible?(invoice_item)
+    discounts.where('quantity_threshold <= ?', invoice_item.quantity)
+  end
+
+  def discount_applied(invoice_item)
+    discount_eligible?(invoice_item).select('id','discount_percentage')
+      .order(discount_percentage: :desc)
+      .first
   end
 end

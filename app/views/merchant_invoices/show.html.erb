@@ -34,8 +34,8 @@
         <%= f.select :status, ['packaged', 'pending', 'shipped'] %>
         <%= f.submit 'Update Item Status' %>
       <% end %>
-        <%if (!invoice_item.item.merchant.discounts.empty?) %> 
-          <%= link_to 'Discount Applied', merchant_discount_path(invoice_item.item.merchant.id, invoice_item.item.merchant.discounts.first.id) %>
+        <%if (!invoice_item.item.merchant.discounts.empty?) && (!invoice_item.item.merchant.discount_eligible?(invoice_item).empty?) %> 
+          <%= link_to 'Discount Applied', merchant_discount_path(invoice_item.item.merchant, invoice_item.item.merchant.discount_applied(invoice_item)) %>
         <% else %>
           <p>**Item quantity is not eligible for bulk discount**</p>
         <% end %>
