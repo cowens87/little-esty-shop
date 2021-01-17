@@ -44,19 +44,19 @@ RSpec.describe 'As a merchant', type: :feature do
     # Individual Project Stories:
     describe 'Merchant Bulk Discount Edit' do
       it 'I see a link to edit the bulk discount' do
-        visit merchant_discount_path(@amazon.id, @discount_10.id)
+        visit merchant_discount_path(@amazon, @discount_10)
 
         expect(page).to have_content("Discount Percentage: 10")
         expect(page).to have_link('Edit Discount')
         
         click_link('Edit Discount')
         
-        expect(current_path).to eq(edit_merchant_discount_path(@amazon.id, @discount_10.id))
+        expect(current_path).to eq(edit_merchant_discount_path(@amazon, @discount_10))
 
         fill_in 'Discount Percentage:', with: 55
         click_on 'Submit'
 
-        expect(current_path).to eq(merchant_discount_path(@amazon.id, @discount_10.id))
+        expect(current_path).to eq(merchant_discount_path(@amazon, @discount_10))
         expect(page).to have_content("Discount Percentage: 55")
       end
     end

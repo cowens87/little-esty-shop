@@ -44,20 +44,20 @@ RSpec.describe 'Merchant Dashboard' do
       end
 
       it "Then I see the name of my merchant" do
-        visit merchant_dashboard_path(@max.id)
+        visit dashboard_merchant_path(@max.id)
 
         expect(page).to have_content(@max.name)
       end
 
       it "Then I see links to my merchant items and invoices indexes (/merchants/merchant_id/items)" do
-        visit merchant_dashboard_path(@max.id)
+        visit dashboard_merchant_path(@max.id)
 
         expect(page).to have_link('Items', href: "/merchants/#{@max.id}/items")
         expect(page).to have_link('Invoices', href: "/merchants/#{@max.id}/invoices")
       end
 
       it "merchant dashboard displays top 5 customers with most succesful transactions" do
-         visit visit merchant_dashboard_path(@amazon.id)
+         visit visit dashboard_merchant_path(@amazon.id)
 
         within('.merchant-top-5-customers-list') do
           expect(page).to have_content("#{@sally.first_name}: 2")
@@ -80,7 +80,7 @@ RSpec.describe 'Merchant Dashboard' do
           InvoiceItem.create!(invoice_id: invoice1.id, item_id: item_2.id, quantity: 1, unit_price: 10, status: 1)
           InvoiceItem.create!(invoice_id: invoice1.id, item_id: item_3.id, quantity: 1, unit_price: 15, status: 2)
 
-          visit merchant_dashboard_path(@max.id)
+          visit dashboard_merchant_path(@max.id)
 
           within('.items-rdy-to-ship') do
             expect(page).to have_content('Items Ready to Ship')
@@ -94,7 +94,7 @@ RSpec.describe 'Merchant Dashboard' do
 
           expect(current_path).to eq("/merchants/#{@max.id}/items/#{item_1.id}")
 
-          visit merchant_dashboard_path(@max.id)
+          visit dashboard_merchant_path(@max.id)
 
           click_on "#{item_2.id}"
 
@@ -115,7 +115,7 @@ RSpec.describe 'Merchant Dashboard' do
           InvoiceItem.create!(invoice_id: invoice1.id, item_id: item_3.id, quantity: 1, unit_price: 15, status: 2)
           InvoiceItem.create!(invoice_id: invoice2.id, item_id: item_4.id, quantity: 1, unit_price: 20, status: 1)
           
-          visit merchant_dashboard_path(@max.id)
+          visit dashboard_merchant_path(@max.id)
 
           within('.items-rdy-to-ship') do
             expect(page).to have_content(invoice1.created_at.strftime("%A, %B %d, %Y"))
@@ -126,7 +126,7 @@ RSpec.describe 'Merchant Dashboard' do
         # Individual Project Stories:
         describe 'Merchant Bulk Discounts Index' do
           it 'I see a link to view all my discounts' do
-            visit merchant_dashboard_path(@amazon.id)
+            visit dashboard_merchant_path(@amazon.id)
             
             expect(page).to have_link('View All Discounts')
             

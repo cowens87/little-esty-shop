@@ -51,4 +51,19 @@ class Merchant < ApplicationRecord
   def disabled_items
     items.where(status: 'Disabled')
   end
+
+  def discount_amount?(items_on_invoice)
+    discount_total = 0
+    items_on_invoice.each do |item|
+      item_qty = item.quantity
+      applicable_discounts = discounts.where('quantity_threshold <= ?', item_qty)
+      if !self.discounts.empty? && !applicable_discounts.empty?
+        item_total = item.quantity * item.unit_price
+        discount_total += (item_total * (applicable_discounts.maximum(:discount_percentage)/100))
+      else
+        discount_total += 0
+      end
+    end
+    discount_total
+  end
 end

@@ -1,6 +1,38 @@
 require 'rails_helper'
 
 RSpec.describe Merchant, type: :model do
+  before :each do
+    # Customers:
+    @salim     = Customer.create!(first_name: 'Salim', last_name: 'Imwera', address: 'Up The Hill, Kwale, Kenya')
+    @sally     = Customer.create!(first_name: 'Sally', last_name: 'Smith', address: 'Test Address')
+    # Merchants:
+    @amazon    = Merchant.create!(name: 'Amazon')
+    @max       = Merchant.create!(name: 'Merch Max')
+    # Invoices:
+    @invoice1  = Invoice.create!(status: 1, customer_id: @sally.id, merchant_id: @max.id)
+    @invoice2  = Invoice.create!(status: 1, customer_id: @sally.id, merchant_id: @max.id)
+    @invoice7  = Invoice.create!(status: 2, customer_id: @salim.id, merchant_id: @amazon.id, created_at: 'Fri, 08 Dec 2020 14:42:18 UTC +00:00')
+    # Items:
+    @item_1    = @max.items.create!(name: 'Beans', description: 'Tasty', unit_price: 5)
+    @item_2    = @max.items.create!(name: 'Item 2', description: 'Blah', unit_price: 10)
+    @backpack  = @amazon.items.create!(name: 'Camo Backpack', description: 'Double Zip Backpack', unit_price: 5.0)
+    @radio     = @amazon.items.create!(name: 'Retro Radio', description: 'Twist and Turn to your fav jams', unit_price: 10.0)
+    @brush     = @amazon.items.create!(name: 'Boar Brush', description: 'Hair Brush', unit_price: 12.5)
+    # InvoiceItems:
+    @invitm1   = InvoiceItem.create!(status: 0, quantity: 25, unit_price: 7.0, invoice_id: @invoice1.id, item_id: @item_1.id)
+    @invitm2   = InvoiceItem.create!(status: 2, quantity: 10, unit_price: 15.5, invoice_id: @invoice2.id, item_id: @item_2.id)
+    @invitm3   = InvoiceItem.create!(status: 0, quantity: 25, unit_price: 10, invoice_id: @invoice1.id, item_id: @item_2.id)
+    @invitm4   = InvoiceItem.create!(status: 2, quantity: 50, unit_price: 5.0, invoice_id: @invoice7.id, item_id: @backpack.id)
+    @invitm5   = InvoiceItem.create!(status: 1, quantity: 100, unit_price: 10.0, invoice_id: @invoice7.id, item_id: @radio.id)
+    @invitm6   = InvoiceItem.create!(status: 1, quantity: 20, unit_price: 10.0, invoice_id: @invoice7.id, item_id: @brush.id)
+    # Discounts:
+    @discount_1 = Discount.create!(discount_percentage: 10, quantity_threshold: 30, merchant_id: @amazon.id)
+    @discount_2 = Discount.create!(discount_percentage: 15, quantity_threshold: 50, merchant_id: @amazon.id)
+    @discount_3 = Discount.create!(discount_percentage: 20, quantity_threshold: 100, merchant_id: @amazon.id)
+    @discount_4 = Discount.create!(discount_percentage: 20, quantity_threshold: 15, merchant_id: @max.id)
+    @discount_5 = Discount.create!(discount_percentage: 30, quantity_threshold: 15, merchant_id: @max.id)
+  end
+
   describe 'validations' do
     it { should validate_presence_of :name}
   end
@@ -219,7 +251,6 @@ RSpec.describe Merchant, type: :model do
     
     describe 'Enabled Merchants' do
       it "returns merchant with a status of 'Enabled'" do
-      
       # Customers:
         sally    = Customer.create!(first_name: 'Sally', last_name: 'Smith')
         joel     = Customer.create!(first_name: 'Joel', last_name: 'Hansen')
@@ -260,6 +291,10 @@ RSpec.describe Merchant, type: :model do
 
         expect(Merchant.enabled_merchants).to eq(expected)
       end
+    end
+    # Individual Project Stories:
+    it 'Can find the total discount applied to a merchants invoice items' do
+      expect(@amazon.discount_amount?(@amazon.invoice_items)).to eq(237.5)
     end
   end
 end
