@@ -202,17 +202,17 @@ RSpec.describe Merchant, type: :model do
     end
 
     it 'Can determine if invoice items are eligible for a discount' do
-      actual  = @spice_emp.discount_eligible?(@spice_emp.invoice_items.last)
-      actual1 = @spice_emp.discount_eligible?(@spice_emp.invoice_items.first)
+      expected  = @spice_emp.discount_eligible?(@spice_emp.invoice_items.last)
+      expected1 = @spice_emp.discount_eligible?(@spice_emp.invoice_items.first)
    
-      expect(actual.count >= 1).to be(true)
-      expect(actual1.count >= 1).to be(false)
+      expect(expected.count >= 1).to be(true)
+      expect(expected1.count >= 1).to be(false)
     end
 
     it 'Can find which discount was applied' do
-      actual  = @spice_emp.discount_applied(@spice_emp.invoice_items.last)
+      expected  = @spice_emp.discount_applied(@spice_emp.invoice_items.last)
    
-      expect(actual).to eq(@discount_7)
+      expect(expected).to eq(@discount_7)
     end
   end
 end
