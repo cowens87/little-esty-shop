@@ -150,12 +150,14 @@ RSpec.describe Merchant, type: :model do
       it "it can order by merchant status enabled" do
         actual = Merchant.enabled_merchants
         expected = [@amazon, @spice_emp]
+
         expect(actual).to eq(expected)
       end
 
       it "it can order by merhcant status disabled" do
         actual = Merchant.disabled_merchants
         expected = [@max]
+
         expect(actual).to eq(expected)
       end
     end
@@ -196,6 +198,21 @@ RSpec.describe Merchant, type: :model do
     # Individual Project Stories:
     it 'Can find the total discount applied to a merchants invoice items' do
       expect(@amazon.discount_amount?(@amazon.invoice_items)).to eq(237.5)
+      expect(@spice_emp.discount_amount?(@spice_emp.invoice_items)).to eq(88.6)
+    end
+
+    it 'Can determine if invoice items are eligible for a discount' do
+      actual  = @spice_emp.discount_eligible?(@spice_emp.invoice_items.last)
+      actual1 = @spice_emp.discount_eligible?(@spice_emp.invoice_items.first)
+   
+      expect(actual.count >= 1).to be(true)
+      expect(actual1.count >= 1).to be(false)
+    end
+
+    it 'Can find which discount was applied' do
+      actual  = @spice_emp.discount_applied(@spice_emp.invoice_items.last)
+   
+      expect(actual).to eq(@discount_7)
     end
   end
 end
