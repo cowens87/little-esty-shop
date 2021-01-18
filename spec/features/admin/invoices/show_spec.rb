@@ -38,6 +38,12 @@ RSpec.describe 'As an admin user' do
       @invitm1  = InvoiceItem.create!(status: 0, quantity: 25, unit_price: 7.0, invoice_id: @invoice1.id, item_id: @candle.id)
       @invitm2  = InvoiceItem.create!(status: 2, quantity: 10, unit_price: 15.5, invoice_id: @invoice2.id, item_id: @backpack.id)
       @invitm3  = InvoiceItem.create!(status: 1, quantity: 100, unit_price: 9.75, invoice_id: @invoice3.id, item_id: @radio.id)
+      @invitm4  = InvoiceItem.create!(status: 2, quantity: 10, unit_price: 15.5, invoice_id: @invoice4.id, item_id: @backpack.id)
+      @invitm5  = InvoiceItem.create!(status: 1, quantity: 100, unit_price: 9.75, invoice_id: @invoice4.id, item_id: @radio.id)
+      # Discounts:
+      @discount_1 = Discount.create!(discount_percentage: 10, quantity_threshold: 30, merchant_id: @amazon.id)
+      @discount_2 = Discount.create!(discount_percentage: 15, quantity_threshold: 50, merchant_id: @amazon.id)
+      @discount_3 = Discount.create!(discount_percentage: 20, quantity_threshold: 100, merchant_id: @amazon.id)
     end
 
     describe 'Admin Invoice Show Page' do
@@ -117,6 +123,18 @@ RSpec.describe 'As an admin user' do
         within('.invoice_details') do
           expect(page).to have_content("Status: Cancelled")
         end
+      end
+    end
+    # Individual Project Stories:
+    describe 'Admin Invoice Show Page: Total Revenue includes discounts' do
+      it 'I see that the total revenue includes bulk discounts in the calculation' do
+        visit admin_invoice_path(@invoice4.id)
+        
+        within('.invoice_details') do
+          expect(page).to have_content("Total Revenue: $1130.0")
+          expect(page).to have_content("Discount Applied: -$195.0")
+          expect(page).to have_content("Total After Discount: $935.0")
+        end   
       end
     end
   end 

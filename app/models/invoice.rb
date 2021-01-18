@@ -20,9 +20,9 @@ class Invoice < ApplicationRecord
 
   def self.best_day
     self.joins(:invoice_items)
-        .select('invoices.created_at, SUM(invoice_items.quantity * invoice_items.unit_price) AS best_day')
-        .group(:id)
-        .order('best_day desc')
-        .first
+      .select('invoices.created_at, SUM(invoice_items.quantity * invoice_items.unit_price) AS best_day')
+      .group(:id)
+      .order('best_day desc')
+      .first
   end
 end

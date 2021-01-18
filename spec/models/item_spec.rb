@@ -113,7 +113,7 @@ RSpec.describe Item, type: :model do
       # Invoices:
       invoice1 = Invoice.create!(status: 0, customer_id: @sally.id, merchant_id: amazon.id)
       invoice2 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: alibaba.id)
-      invoice3 = Invoice.create!(status: 0, customer_id: @billy.id, merchant_id: all_birds.id)
+      invoice3 = Invoice.create!(status: 0, customer_id: @billy.id, merchant_id: all_birds.id, created_at: 'Sat, 16 Jan 2021 14:42:18 UTC +00:00')
       invoice4 = Invoice.create!(status: 0, customer_id: @steve.id, merchant_id: overstock.id)
       invoice5 = Invoice.create!(status: 0, customer_id: @frank.id, merchant_id: big_lots.id)
       invoice6 = Invoice.create!(status: 0, customer_id: @joel.id, merchant_id: walmart.id)
@@ -143,7 +143,7 @@ RSpec.describe Item, type: :model do
       date = radio1.invoices.best_day.created_at
       expected = date.strftime('%m/%d/%y')
 
-      expect(expected).to eq('01/15/21') 
+      expect(expected).to eq(invoice3.created_at.strftime('%m/%d/%y')) 
     end
   end
 end

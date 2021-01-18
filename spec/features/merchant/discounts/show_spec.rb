@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'As a merchant', type: :feature do
   describe 'When I visit my bulk discounts show page' do
     before(:each) do
-              @sally       = Customer.create!(first_name: 'Sally', last_name: 'Smith')
+        @sally       = Customer.create!(first_name: 'Sally', last_name: 'Smith')
         @joel        = Customer.create!(first_name: 'Joel', last_name: 'Hansen')
         @john        = Customer.create!(first_name: 'John', last_name: 'Hansen')
         @travolta    = Customer.create!(first_name: 'Travolta', last_name: 'Hansen')
@@ -44,7 +44,7 @@ RSpec.describe 'As a merchant', type: :feature do
     # Individual Project Stories:
     describe 'Merchant Bulk Discount Show' do
       it 'I see the bulk discounts quantity threshold and percentage discount' do
-        visit merchant_discount_path(@amazon.id, @discount_10.id)
+        visit merchant_discount_path(@amazon, @discount_10)
 
         expect(page).to have_content("Discount Percentage: #{@discount_10.discount_percentage}")
         expect(page).to have_content("Quantity Threshold: #{@discount_10.quantity_threshold}")

@@ -13,7 +13,7 @@ class Merchant < ApplicationRecord
   def top_five_customers
     self.transactions.joins(invoice: :customer)
       .where('transactions.result = ?', "success")
-      .select('customers.first_name, count(transactions) as successful_transactions')
+      .select('customers.first_name, COUNT(transactions) AS successful_transactions')
       .group('customers.id')
       .order('successful_transactions desc')
       .limit(5)
@@ -50,5 +50,30 @@ class Merchant < ApplicationRecord
 
   def disabled_items
     items.where(status: 'Disabled')
+  end
+ # Individual Project Methods:
+  def discount_amount?(items_on_invoice)
+    discount_total = 0
+    items_on_invoice.each do |item|
+      item_qty = item.quantity
+      applicable_discounts = discounts.where('quantity_threshold <= ?', item_qty)
+      if !self.discounts.empty? && !applicable_discounts.empty?
+        item_total = item.quantity * item.unit_price
+        discount_total += (item_total * (applicable_discounts.maximum(:discount_percentage)/100))
+      else
+        discount_total += 0
+      end
+    end
+    discount_total
+  end
+
+  def discount_eligible?(invoice_item)
+    discounts.where('quantity_threshold <= ?', invoice_item.quantity)
+  end
+
+  def discount_applied(invoice_item)
+    discount_eligible?(invoice_item).select('id','discount_percentage')
+      .order(discount_percentage: :desc)
+      .first
   end
 end
