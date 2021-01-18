@@ -24,8 +24,9 @@ describe 'As a merchant' do
       @invitm3   = InvoiceItem.create!(status: 0, quantity: 25, unit_price: 10, invoice_id: @invoice1.id, item_id: @item_2.id)
       @invitm4   = InvoiceItem.create!(status: 2, quantity: 50, unit_price: 5.0, invoice_id: @invoice7.id, item_id: @backpack.id)
       @invitm5   = InvoiceItem.create!(status: 1, quantity: 100, unit_price: 10.0, invoice_id: @invoice7.id, item_id: @radio.id)
+      @invitm6   = InvoiceItem.create!(status: 1, quantity: 5, unit_price: 10.0, invoice_id: @invoice7.id, item_id: @item_3.id)
       # Discounts:
-      @discount_1 = Discount.create!(discount_percentage: 10, quantity_threshold: 6, merchant_id: @amazon.id)
+      @discount_1 = Discount.create!(discount_percentage: 10, quantity_threshold: 60, merchant_id: @amazon.id)
       @discount_2 = Discount.create!(discount_percentage: 15, quantity_threshold: 15, merchant_id: @amazon.id)
       @discount_3 = Discount.create!(discount_percentage: 20, quantity_threshold: 10, merchant_id: @amazon.id)
       @discount_4 = Discount.create!(discount_percentage: 20, quantity_threshold: 15, merchant_id: @max.id)
@@ -104,9 +105,9 @@ describe 'As a merchant' do
       it 'I see that the total revenue for my merchant includes bulk discounts in the calculation' do
         visit merchant_invoice_path(@amazon, @invoice7)
 
-        expect(page).to have_content('Total Revenue: $1250.0')
+        expect(page).to have_content('Total Revenue: $1300.0')
         expect(page).to have_content('Discount Applied: -$250.0')
-        expect(page).to have_content('Total After Discount: $1000.0')
+        expect(page).to have_content('Total After Discount: $1050.0')
       end
     end
 
@@ -114,10 +115,10 @@ describe 'As a merchant' do
       it 'Next to each invoice item I see a link to the show page for the bulk discount that was applied (if any)' do
         visit merchant_invoice_path(@amazon, @invoice7)
 
-        within "#invoice-item-#{@invitm4.id}" do
+        within "#invoice-item-#{@invitm6.id}" do
           expect(page).to have_content('**Item quantity is not eligible for bulk discount**')
         end
-        
+
         within "#invoice-item-#{@invitm5.id}" do
           expect(page).to have_link('Discount Applied')
           click_link('Discount Applied')

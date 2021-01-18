@@ -42,17 +42,23 @@ RSpec.describe 'As a merchant', type: :feature do
         @discount_20 = Discount.create!(discount_percentage: 20, quantity_threshold: 20, merchant_id: @amazon.id)
     end
     # Individual Project Stories:
-    describe 'Merchant Bulk Discount Delete' do
-      it 'Next to each bulk discount I see a link to delete it' do
+    describe 'Merchant Bulk Discount Create' do
+      it 'I see a link to create a new discount' do
         visit merchant_discounts_path(@amazon)
-       
-        within("#discount-info-#{@discount_10.id}") do
-          expect(page).to have_link('Delete Discount')
-          click_link('Delete Discount')
-        end
+
+        expect(page).to have_link('Create a New Discount')
+
+        click_link('Create a New Discount')
+
+        expect(current_path).to eq(new_merchant_discount_path(@amazon))
+
+        fill_in 'Discount Percentage:', with: 25
+        fill_in 'Quantity Threshold:', with: 50
+        click_on 'Submit'
 
         expect(current_path).to eq(merchant_discounts_path(@amazon))
-        expect(page).to_not have_content(@discount_10)
+        expect(page).to have_content('Discount Percentage: 25')
+        expect(page).to have_content('Quantity Threshold: 50')
       end
     end
   end
